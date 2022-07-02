@@ -29,3 +29,6 @@ The vulnerability is that the receiver contract doesn't verify that the call was
 ### Challenge 3: Truster
 The vulnerability is that an attacker can let the `data` parameter be anything. This includes the `approve` function of the ERC20 token. By having the flashloan contract call the `approve` function, we can authorize ourselves to steal all the funds from the lending pool. See `contracts/truster/Exploit3.sol` to see how you can do in a single transaction.
 
+
+### Challenge 4: Side-Entrance
+The vulnerability is that flashloans are repaid by deposting ether back into the caller's balance (state variable in the pool contract). This means we can set our balance in the state variable as the contract's entire balance using a valid flashloan. After that, Ww can then withdraw all the funds since our balance has been updated. See `contacts/side-entrance/Exploit4.sol` for the solution on how to do this.

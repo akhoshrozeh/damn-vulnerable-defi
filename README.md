@@ -32,3 +32,9 @@ The vulnerability is that an attacker can let the `data` parameter be anything. 
 
 ### Challenge 4: Side-Entrance
 The vulnerability is that flashloans are repaid by deposting ether back into the caller's balance (state variable in the pool contract). This means we can set our balance in the state variable as the contract's entire balance using a valid flashloan. After that, Ww can then withdraw all the funds since our balance has been updated. See `contacts/side-entrance/Exploit4.sol` for the solution on how to do this.
+
+### Challenge 5: The-Rewarder
+We can steal all the reward tokens by waiting until the next round offchain, then taking a very large flashloan and depositing it into the rewards pool, get the rewards token, then pay back the flashloan. See `contracts/the-rewarder/Exploit6.sol`.
+
+### Challenge 6: Selfie
+My favorite one so far. The key problem here is that the pool uses the same ERC20 for governance tokens as it does for flashloans. This allows us to take a large flashloan giving us the majority of governance tokens during the transaction. We then craft a payload that will drain the tokens to us, and queue it in the governance contract. After the timelock has been completed, we can then execute the action. See `contracts/selfie/Exploit6.sol`.

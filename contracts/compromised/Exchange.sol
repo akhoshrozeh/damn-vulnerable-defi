@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+import "hardhat/console.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
@@ -55,7 +56,7 @@ contract Exchange is ReentrancyGuard {
         token.burn(tokenId);
         
         payable(msg.sender).sendValue(currentPriceInWei);
-
+        // console.log("price:",currentPriceInWei);
         emit TokenSold(msg.sender, tokenId, currentPriceInWei);
     }
 

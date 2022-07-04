@@ -38,3 +38,11 @@ We can steal all the reward tokens by waiting until the next round offchain, the
 
 ### Challenge 6: Selfie
 My favorite one so far. The key problem here is that the pool uses the same ERC20 for governance tokens as it does for flashloans. This allows us to take a large flashloan giving us the majority of governance tokens during the transaction. We then craft a payload that will drain the tokens to us, and queue it in the governance contract. After the timelock has been completed, we can then execute the action. See `contracts/selfie/Exploit6.sol`.
+
+
+### Challege 7: Compromised
+I like how this one incorporated a bit of offchain work as well. The server has leaked private keys to the accounts that are 'oracles'. By gaining access to the oracle accounts, we can set the price of NFT very low, buy one, then set the price of the NFT very high, then sell it for profit. The exact parameters can be adjusted such that we drain the entire exchange of Eth and we solve the level.
+
+
+### Challenge 8: Puppet
+Also really liked this one for using Uniswap, a real protocol. Basically, the vulnerability is that the lending relied on the Uniswap pair as a price oracle. This pair has very little liquidity, so we can easily manipulate the price of the DVT token. By depositing a lot of DVT into the pair, we make it so that the price of DVT is now very cheap. We can the then borrow 100,000 DVT for less than 10 eth, whereas before the swap we would have to collateralize 200,000 eth. Neattt. 

